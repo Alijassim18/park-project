@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const AdminRouter = require("./routes/AdminRoutes")
+const CompanyRouter = require("./routes/CompanyRoutes")
 const app = express();
 
 
@@ -21,8 +22,9 @@ app.get("/jamal",(req,res)=>{
 })
 //MARK: Middlewares
 app.use(morgan("dev"));
-app.use(express.json())
-app.use("/admin" , AdminRouter)
+app.use(express.json());
+app.use("/admin" , AdminRouter);
+app.use("/company" , CompanyRouter);
 
 
 app.use((req,res,next)=>{

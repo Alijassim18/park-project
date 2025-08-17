@@ -95,6 +95,6 @@ module.exports = {
     getCompany,
     updateCompany , 
     deleteCompany,
-    AdminById
+    CompanyById
 
 }

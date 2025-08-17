@@ -16,3 +16,12 @@ async function craeteAdmin(request, response) {
 
 };
 
+async function getAdmin(request, response) {
+    try {
+        const AdminnGet  = await Admin.find();
+        response.status(201).json(AdminnGet);
+    }catch(err) {
+        console.log("Their is an error getting Admin: ",err);
+    };
+    
+};

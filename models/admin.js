@@ -15,4 +15,10 @@ const AdmingSchema = Schema({
         required: true,
         type:String
     }
-})
+
+});
+
+
+const Admin = model("Admin" , AdmingSchema);
+
+module.exports = Admin;

@@ -6,19 +6,21 @@ const CompaniesSchema  = Schema({
         type: String,
         required: true
     },
-    email: {
-        required: true,
-        type:String
+    Service: {
+        type: String,
+        required: true
     },
-    password:{
-        required: true,
-        type:String
+    AreaSize: {
+        type: String
+    },
+    Location: {
+        type: String,
+        required: true
     },
     Admin: [{
         type: Schema.Types.ObjectId,
         ref:"Admin"
     }]
-
 });
 
 

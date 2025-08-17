@@ -6,21 +6,19 @@ const CustomerSchema  = Schema({
         type: String,
         required: true
     },
-    Service: {
-        type: String,
-        required: true
+    email: {
+        required: true,
+        type:String
     },
-    AreaSize: {
-        type: String
-    },
-    Location: {
-        type: String,
-        required: true
+    password:{
+        required: true,
+        type:String
     },
     Admin: [{
         type: Schema.Types.ObjectId,
         ref:"Admin"
     }]
+
 
 });
 

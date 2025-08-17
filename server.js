@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv").config();
 const AdminRouter = require("./routes/AdminRoutes")
 const CompanyRouter = require("./routes/CompanyRoutes")
+const CustomerRouter = require("./routes/CustomerRoutes")
 const app = express();
 
 
@@ -25,6 +26,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use("/admin" , AdminRouter);
 app.use("/company" , CompanyRouter);
+app.use("/customer" , CustomerRouter)
 
 
 app.use((req,res,next)=>{

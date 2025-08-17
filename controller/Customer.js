@@ -6,8 +6,8 @@ async function createCustomer(request, response) {
     try {
         console.log("In Route")
 
-        const Customer  = await Customer.create(request.body);
-                        response.status(201).json(Customer);
+        const Customerr  = await Customer.create(request.body);
+                        response.status(201).json(Customerr);
 
     }catch(err) {
         console.log("Their is an error creating Admin: ",err);

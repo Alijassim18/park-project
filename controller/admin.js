@@ -41,3 +41,26 @@ async function updateAdmin(request, response) {
         console.log("Their is an error updating Admin: ",err)
     }
 }
+
+async function deleteAdmin(request, response) {
+
+    try {
+         const Admin = await Admin.findByIdAndDelete(request.params.id);
+
+
+         if(Admin) {
+            response.status(200).json(Admin);
+         }
+            else {
+                response.sendStatus(404).json;
+            }
+
+
+    }catch(err) {
+        console.log("Their is an error deleting Admin: ",err)
+        response.status(500).json({error : err.message});
+    }
+
+
+ 
+}

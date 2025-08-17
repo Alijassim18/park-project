@@ -64,3 +64,35 @@ async function deleteAdmin(request, response) {
 
  
 }
+
+async function AdminById(request, response) {
+
+    try {
+         const Admin = await Admin.findById(request.params.id);
+
+
+         if(Admin) {
+            response.status(200).json(Admin);
+         }
+            else {
+                response.sendStatus(404).json;
+            }
+
+
+    }catch(err) {
+        console.log("Their is an error deleting Admin: ",err)
+        response.status(500).json({error : err.message});
+    }
+    
+
+}
+
+
+module.exports = {
+    craeteAdmin,
+    getAdmin,
+    updateAdmin , 
+    deleteAdmin,
+    AdminById
+
+}

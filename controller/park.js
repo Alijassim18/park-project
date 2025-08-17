@@ -41,3 +41,59 @@ async function updatePark(request, response) {
     }
 }
 
+async function deletePark(request, response) {
+
+    try {
+         const parkk = await park.findByIdAndDelete(request.params.id);
+
+
+         if(parkk) {
+            response.status(200).json(park);
+         }
+            else {
+                response.sendStatus(404).json;
+            }
+
+
+    }catch(err) {
+        console.log("Their is an error deleting Admin: ",err)
+        response.status(500).json({error : err.message});
+    }
+
+
+ 
+}
+
+async function ParkById(request, response) {
+
+    try {
+         const Parkk = await park.findById(request.params.id);
+
+
+         if(Parkk) {
+            response.status(200).json(park);
+         }
+            else {
+                response.sendStatus(404).json;
+            }
+
+
+    }catch(err) {
+        console.log("Their is an error deleting Admin: ",err)
+        response.status(500).json({error : err.message});
+    }
+    
+
+}
+
+
+module.exports = {
+    createPark,
+    getPark,
+    updatePark , 
+    deletePark,
+    ParkById
+
+}
+
+

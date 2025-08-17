@@ -23,3 +23,8 @@ const parkSchema = Schema({
         ref:"Companies"
     }
 })
+
+
+const park = model("park" , parkSchema);
+
+module.exports = park;

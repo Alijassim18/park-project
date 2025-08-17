@@ -25,3 +25,19 @@ async function getAdmin(request, response) {
     };
     
 };
+async function updateAdmin(request, response) {
+    
+    try {
+
+        const AdminU = await Admin.findByIdAndUpdate(request.params.id , request.body);
+        if(AdminU) {
+            response.status(200).json(Admin);
+         }
+            else {
+                response.sendStatus(404).json;
+            }
+
+    }catch(err) {
+        console.log("Their is an error updating Admin: ",err)
+    }
+}

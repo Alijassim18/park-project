@@ -5,6 +5,7 @@ const Admin = require("../models/admin");
 async function craeteAdmin(request, response) {
 
     try {
+        console.log("In Route")
 
         const Adminn  = await Admin.create(request.body);
                         response.status(201).json(Adminn);

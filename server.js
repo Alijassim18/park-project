@@ -3,8 +3,8 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
-
-const App = express();
+const AdminRouter = require("./routes/AdminRoutes")
+const app = express();
 
 
 //MARK: Database Connection
@@ -16,15 +16,21 @@ mongoose.connection.on("connected" , () => {
 })
 
 
+app.get("/jamal",(req,res)=>{
+    res.json("Success")
+})
 //MARK: Middlewares
-App.use(morgan);
-App.use(morgan("dev"));
-App.use(express.json);
+app.use(morgan("dev"));
+app.use(express.json())
+app.use("/admin" , AdminRouter)
 
 
+app.use((req,res,next)=>{
+    res.status(404).json("Route not found 404")
+})
 //MARK: Listening
 
-App.listen(3000 , () => {
+app.listen(3000 , () => {
     console.log("The backend is listening");
 })
 

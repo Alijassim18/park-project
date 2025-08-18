@@ -8,6 +8,7 @@ const CompanyRouter = require("./routes/CompanyRoutes")
 const CustomerRouter = require("./routes/CustomerRoutes")
 const parkRouter = require("./routes/ParkRoute")
 const bookRouter = require("./routes/bookRoutes")
+const cors = require("cors");
 const app = express();
 
 

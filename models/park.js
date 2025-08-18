@@ -3,7 +3,8 @@ const {Schema , model} = require("mongoose");
 const parkSchema = Schema({
     state:{
          type:String,
-         required: true
+         required: true,
+         enum: ["available , unavailable"]
     },
     StartTime:{
         type:Date,

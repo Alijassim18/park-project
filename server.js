@@ -20,6 +20,9 @@ mongoose.connection.on("connected" , () => {
     console.log("Database is connected");
 })
 
+app.get("test",(req,res)=>{
+    res.json("Test Success")
+})
 
 app.get("/jamal",(req,res)=>{
     res.json("Success")

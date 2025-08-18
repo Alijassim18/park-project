@@ -7,7 +7,7 @@ const parkSchema = Schema({
     },
     StartTime:{
         type:Date,
-        required:True
+        required:true
     },
     EndTime:{
         type: Date,
@@ -15,7 +15,7 @@ const parkSchema = Schema({
     },
     Paid: {
         type: Boolean,
-        required: True
+        required: true
     }
     ,
     Companies: {

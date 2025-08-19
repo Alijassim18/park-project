@@ -4,7 +4,7 @@ const parkSchema = Schema({
     state:{
          type:String,
          required: true,
-         enum: ["available , unavailable"]
+         enum: ["available" , "unavailable"]
     },
     StartTime:{
         type:Date,

@@ -1,7 +1,6 @@
 const Companies = require("../models/Companies");
 const { AdminById } = require("./admin");
-
-
+const Admin = require("../models/admin");
 
 async function createCompany(request, response) {
 
@@ -20,7 +19,7 @@ async function createCompany(request, response) {
 
 async function getCompany(request, response) {
     try {
-        const CompanyGet  = await Companies.find();
+        const CompanyGet  = await Companies.find().populate('Admin');
         response.status(201).json(CompanyGet);
     }catch(err) {
         console.log("Their is an error getting Admin: ",err);

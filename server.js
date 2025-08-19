@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const cors = require("cors");
+
 const dotenv = require("dotenv").config();
 const AdminRouter = require("./routes/AdminRoutes")
 const CompanyRouter = require("./routes/CompanyRoutes")
@@ -28,14 +28,14 @@ app.get("/jamal",(req,res)=>{
     res.json("Success")
 })
 //MARK: Middlewares
-app.use(cors({origin:"http://localhost:5173"}))
+app.use(cors({origin:"http://localhost:5175"}))
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/admin" , AdminRouter);
 app.use("/company" , CompanyRouter);
 app.use("/customer" , CustomerRouter)
 app.use("/book" ,bookRouter )
-app.use("/book" , parkRouter )
+app.use("/park" , parkRouter )
 
 app.use((req,res,next)=>{
     res.status(404).json("Route not found 404")

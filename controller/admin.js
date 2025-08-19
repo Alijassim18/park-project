@@ -46,11 +46,11 @@ async function updateAdmin(request, response) {
 async function deleteAdmin(request, response) {
 
     try {
-         const Admin = await Admin.findByIdAndDelete(request.params.id);
+         const admin = await Admin.findByIdAndDelete(request.params.id);
 
 
-         if(Admin) {
-            response.status(200).json(Admin);
+         if(admin) {
+            response.status(200).json(admin);
          }
             else {
                 response.sendStatus(404).json;
@@ -69,11 +69,11 @@ async function deleteAdmin(request, response) {
 async function AdminById(request, response) {
 
     try {
-         const Admin = await Admin.findById(request.params.id);
+         const admin = await Admin.findById(request.params.id);
 
 
-         if(Admin) {
-            response.status(200).json(Admin);
+         if(admin) {
+            response.status(200).json(admin);
          }
             else {
                 response.sendStatus(404).json;

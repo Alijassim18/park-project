@@ -14,6 +14,7 @@ const AdmingSchema = Schema({
     password:{
         required: true,
         type:String
+        
     }
 
 });

@@ -8,7 +8,6 @@ const CompanyRouter = require("./routes/CompanyRoutes")
 const CustomerRouter = require("./routes/CustomerRoutes")
 const parkRouter = require("./routes/ParkRoute")
 const bookRouter = require("./routes/bookRoutes")
-const cors = require("cors");
 const app = express();
 
 
@@ -35,7 +34,7 @@ app.use("/admin" , AdminRouter);
 app.use("/company" , CompanyRouter);
 app.use("/customer" , CustomerRouter)
 app.use("/book" ,bookRouter )
-app.use("/book" , parkRouter )
+app.use("/park" , parkRouter )
 
 app.use((req,res,next)=>{
     res.status(404).json("Route not found 404")

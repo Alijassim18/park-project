@@ -1,55 +1,91 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const Customer=require('../models/Customer')
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const Admin = require("../models/admin");
 
-const SECRET = 'supersecret' // use process.env.SECRET in production
+const SECRET = process.env.SECRET || "dev_secret";
 
-// POST /auth/register
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { email, name, password, role } = req.body
 
-    // check if username taken
-    const existing = await User.findOne({ email })
-    if (existing) {
-      return res.status(400).json({ message: 'Email already exists' })
+
+    if (!email || !name || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email, name, and password are required" })
     }
 
-    // hash password
+   
+    const existing = await Admin.findOne({ email })
+    if (existing) {
+      return res.status(400).json({ message: "Email already exists" })
+    }
+
+    
     const passwordHash = await bcrypt.hash(password, 8)
 
-    // create user
-    const newUser = new Customer({ email, passwordHash })
+
+    const newUser = new Admin({
+      email,
+      name,
+      passwordHash,
+      role: role || "customer",
+    })
+
     await newUser.save()
 
-    res.status(201).json({ message: 'User registered successfully' })
+    res
+      .status(201)
+      .json({ message: `${newUser.role} registered successfully` })
   } catch (err) {
-    res.status(500).json({ message: 'Server error' })
+    console.error("Register error:", err)
+    res.status(500).json({ message: "Server error" })
   }
 }
 
-// POST /auth/login
+
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body
-    const user = await Customer.findOne({ email })
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = await Admin.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' })
+      console.log("User not found");
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const isValid = await user.validatePassword(password)
+    console.log("User found:", user);
+
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+    console.log("Password valid?", isValid);
+
     if (!isValid) {
-      return res.status(401).json({ message: 'Invalid username or password' })
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const payload = {
-      id: user._id
-      // Add anything else that you want to put into the JWT token here
+    if (user.role === "admin") {
+      return res.json({
+        message: "Admin login successful",
+        role: user.role,
+      });
     }
-    const token = jwt.sign(payload, SECRET, { expiresIn: '1h' }) //Look at the docs for more 'expires in' options
-    res.json({ token })
+
+    const payload = { id: user._id, role: user.role };
+    const token = jwt.sign(payload, SECRET, { expiresIn: "1h" });
+
+    res.json({
+      message: "Customer login successful",
+      token,
+      role: user.role,
+    });
+
   } catch (err) {
-    res.status(500).json({ message: 'Server error' })
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};

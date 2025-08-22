@@ -1,99 +1,91 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin");
 
+const SECRET = process.env.SECRET || "dev_secret";
 
+async function createAdmin(req, res) {
+  try {
+    const { email, password } = req.body;
 
-async function craeteAdmin(request, response) {
-
-    try {
-        console.log("In Route")
-
-        const Adminn  = await Admin.create(request.body);
-                        response.status(201).json(Adminn);
-
-    }catch(err) {
-        console.log("Their is an error creating Admin: ",err);
-        response.status(500).json({error : err.message});
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
     }
 
-};
-
-async function getAdmin(request, response) {
-    try {
-        const AdminnGet  = await Admin.find();
-        response.status(201).json(AdminnGet);
-    }catch(err) {
-        console.log("Their is an error getting Admin: ",err);
-    };
-    
-};
-async function updateAdmin(request, response) {
-    
-    try {
-
-        const AdminU = await Admin.findByIdAndUpdate(request.params.id , request.body);
-        if(AdminU) {
-            response.status(200).json(Admin);
-         }
-            else {
-                response.sendStatus(404).json;
-            }
-
-    }catch(err) {
-        console.log("Their is an error updating Admin: ",err)
+    const existing = await Admin.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: "Admin already exists" });
     }
+    const passwordHash = await bcrypt.hash(password, 8);
+
+    const newAdmin = await Admin.create({
+      email,
+      passwordHash,
+      role: "admin",
+    });
+
+    const payload = { id: newAdmin._id, role: newAdmin.role };
+    const token = jwt.sign(payload, SECRET, { expiresIn: "1h" });
+
+    res.status(201).json({
+      message: "Admin created successfully",
+      role: newAdmin.role,
+      token,
+    });
+  } catch (err) {
+    console.error("Error creating admin:", err);
+    res.status(500).json({ error: err.message });
+  }
 }
 
-async function deleteAdmin(request, response) {
-
-    try {
-         const admin = await Admin.findByIdAndDelete(request.params.id);
-
-
-         if(admin) {
-            response.status(200).json(admin);
-         }
-            else {
-                response.sendStatus(404).json;
-            }
-
-
-    }catch(err) {
-        console.log("Their is an error deleting Admin: ",err)
-        response.status(500).json({error : err.message});
-    }
-
-
- 
+async function getAdmin(req, res) {
+  try {
+    const admins = await Admin.find();
+    res.status(200).json(admins);
+  } catch (err) {
+    console.error("Error getting admins:", err);
+    res.status(500).json({ error: err.message });
+  }
 }
 
-async function AdminById(request, response) {
+async function updateAdmin(req, res) {
+  try {
+    const admin = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (admin) res.status(200).json(admin);
+    else res.sendStatus(404);
+  } catch (err) {
+    console.error("Error updating admin:", err);
+    res.status(500).json({ error: err.message });
+  }
+}
 
-    try {
-         const admin = await Admin.findById(request.params.id);
+async function deleteAdmin(req, res) {
+  try {
+    const admin = await Admin.findByIdAndDelete(req.params.id);
+    if (admin) res.status(200).json(admin);
+    else res.sendStatus(404);
+  } catch (err) {
+    console.error("Error deleting admin:", err);
+    res.status(500).json({ error: err.message });
+  }
+}
 
-
-         if(admin) {
-            response.status(200).json(admin);
-         }
-            else {
-                response.sendStatus(404).json;
-            }
-
-
-    }catch(err) {
-        console.log("Their is an error deleting Admin: ",err)
-        response.status(500).json({error : err.message});
-    }
-    
-
+async function AdminById(req, res) {
+  try {
+    const admin = await Admin.findById(req.params.id);
+    if (admin) res.status(200).json(admin);
+    else res.sendStatus(404);
+  } catch (err) {
+    console.error("Error getting admin by ID:", err);
+    res.status(500).json({ error: err.message });
+  }
 }
 
 
 module.exports = {
-    craeteAdmin,
-    getAdmin,
-    updateAdmin , 
-    deleteAdmin,
-    AdminById
-
-}
+  createAdmin,
+  getAdmin,
+  updateAdmin,
+  deleteAdmin,
+  AdminById
+};

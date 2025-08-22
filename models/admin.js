@@ -1,25 +1,31 @@
-const {Schema , model} = require("mongoose");
+const mongoose = require("mongoose")
+const bcrypt = require("bcrypt")
+
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+
+  Name: {
+    type: String,
+    require: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    enum: ["admin", "customer"],
+    default: "customer"
+  },
+}, { timestamps: true })
 
 
-const AdmingSchema = Schema({
+userSchema.methods.validatePassword = async function (password) {
+  return bcrypt.compare(password, this.passwordHash)
+}
 
-    Name: {
-        required: true,
-        type:String
-    },
-    email: {
-        required: true,
-        type:String
-    },
-    password:{
-        required: true,
-        type:String
-        
-    }
-
-});
-
-
-const Admin = model("Admin" , AdmingSchema);
-
-module.exports = Admin;
+module.exports = mongoose.model("User", userSchema)
